@@ -1,0 +1,32 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Spring Boot
+target/
+*.log
+*.pid
+
+# Cache files
+nb-cache/
+**/nb-cache/**
+project-info.ser
+
+# Secrets
+*.key
+*.pem
+application-secrets.yml
+application-local.yml
