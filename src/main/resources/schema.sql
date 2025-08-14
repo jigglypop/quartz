@@ -1,0 +1,11 @@
+-- App table for sample logs
+CREATE TABLE IF NOT EXISTS job_logs (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    job VARCHAR(255) NOT NULL,
+    step VARCHAR(255) NOT NULL,
+    status VARCHAR(64) NOT NULL,
+    message TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
