@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
-import com.example.quartzui.quartz.listener.JobExecutionListener;
+// Listener optional: remove if not needed
 
 @Configuration
 public class QuartzConfig {
@@ -31,10 +31,8 @@ public class QuartzConfig {
 	}
 	
 	@Bean
-	public Scheduler scheduler(SchedulerFactoryBean schedulerFactoryBean, JobExecutionListener jobExecutionListener) throws SchedulerException {
-		Scheduler scheduler = schedulerFactoryBean.getScheduler();
-		scheduler.getListenerManager().addJobListener(jobExecutionListener);
-		return scheduler;
+	public Scheduler scheduler(SchedulerFactoryBean schedulerFactoryBean) throws SchedulerException {
+		return schedulerFactoryBean.getScheduler();
 	}
 }
 

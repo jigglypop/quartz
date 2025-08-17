@@ -7,14 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -239,41 +237,7 @@ public class JobRestController {
 		return ResponseEntity.ok(result);
 	}
 	
-	@PostMapping("/trigger")
-	@Operation(summary = "Chain Job 생성 및 실행", description = "새로운 Chain Job을 생성하고 즉시 실행합니다")
-	@ApiResponse(responseCode = "200", description = "생성 및 실행 성공")
-	public ResponseEntity<Map<String, Object>> trigger(
-			@Parameter(description = "Chain 이름", required = true) @RequestParam String chain,
-			@Parameter(description = "에러 정책 (StopOnFirstErrorPolicy 또는 SkipAndCollectErrorPolicy)") @RequestParam(defaultValue = "StopOnFirstErrorPolicy") String policy) throws SchedulerException {
-		Map<String, Object> input = new HashMap<>();
-		JobDataMap data = new JobDataMap();
-		data.put("chainName", chain);
-		data.put("errorPolicyBean", policy);
-		data.put("input", input);
-
-		JobDetail jobDetail = JobBuilder.newJob(com.example.quartzui.quartz.ChainQuartzJob.class)
-				.withIdentity("chainJob-" + chain, "default")
-				.usingJobData(data)
-				.storeDurably()
-				.build();
-
-		Trigger trigger = TriggerBuilder.newTrigger()
-				.withIdentity("chainTrigger-" + chain, "default")
-				.startNow()
-				.forJob(jobDetail)
-				.build();
-
-		if (scheduler.checkExists(jobDetail.getKey())) {
-			scheduler.deleteJob(jobDetail.getKey());
-		}
-		scheduler.scheduleJob(jobDetail, java.util.Set.of(trigger), true);
-
-		Map<String, Object> result = new HashMap<>();
-		result.put("status", "scheduled");
-		result.put("chain", chain);
-		result.put("policy", policy);
-		return ResponseEntity.ok(result);
-	}
+	// Legacy chain trigger endpoint removed. Use /api/file-jobs/schedule instead.
 }
 
 @RestController
